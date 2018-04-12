@@ -3,30 +3,44 @@ from ubuntu:artful
 run \
 	apt-get -y update && \
 	apt-get -y install git build-essential libboost-all-dev autoconf wget python && \
-	git clone https://github.com/opensourcerisk/engine.git ore && \
+	git clone https://github.com/opensourcerisk/engine.git ore
+
+run \
 	cd ore && \
 	git submodule init && \
 	git submodule update && \
 	cd QuantLib && \
 	./autogen.sh && \
 	./configure  && \
-	make -j4 && \
-	cd ../QuantExt && \
+	make -j4
+
+run \
+	cd ore && \
+	cd QuantExt && \
 	./autogen.sh && \
 	./configure && \
-	make -j4 && \	
-	cd ../OREData && \
+	make -j4
+
+run \
+	cd ore && \
+	cd OREData && \
 	./autogen.sh && \
 	./configure && \
-	make -j4 && \	
-	cd ../OREAnalytics && \
+	make -j4
+
+run \
+	cd ore && \
+	cd OREAnalytics && \
 	./autogen.sh && \
 	./configure && \
-	make -j4 && \
-	cd ../App && \
+	make -j4
+
+run \
+	cd ore && \
+	cd App && \
 	./autogen.sh && \
 	./configure && \
-	make -j4 
+	make -j4
 
 VOLUME /saved
 WORKDIR /saved
@@ -42,8 +56,7 @@ run \
 	./anaconda2/bin/jupyter-dashboards quick-setup --sys-prefix && \
 	./anaconda2/bin/conda install -y -c conda-forge bqplot && \
 	./anaconda2/bin/conda install -y -c conda-forge pythreejs
-	
+
 ENV LC_NUMERIC=C LANG=en_US LC_ALL=en_US PYTHONPATH=/root/anaconda2
 
 CMD [ "/root/anaconda2/bin/jupyter-notebook", "--ip=0.0.0.0", "--port=8888", "--allow-root", "--no-browser", "--NotebookApp.token='monkey99'" ]
-
